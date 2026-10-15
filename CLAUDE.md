@@ -195,3 +195,63 @@ Treat a sub-agent's report as evidence, not as fact. Check any claim that would 
 - The runtime writes `xbox_kernel.log` into the CWD; it is gitignored.
 - Ghidra 12.1.3 and JDK 21 are installed; the Ghidra naming pass is optional but makes logs readable.
 - xemu is installed as the reference emulator but needs Vlad's own BIOS/MCPX/EEPROM.
+
+## 7. Fork Maintenance & Branching Rules
+
+### Remote Architecture
+- `origin`: Fork repository (`DarkTama/DefJamFFNY-recomp`)
+- `upstream`: Original repository (`vyanhursky/DefJamFFNY-recomp`)
+
+### Branch Roles
+- `upstream-sync`:
+  - 1:1 pristine mirror of `upstream/main`.
+  - NEVER commit custom code here. Fast-forward only.
+- `main`:
+  - Primary working branch of fork containing custom features, UI changes, patches, and fork docs.
+  - Receives updates by merging `upstream-sync`.
+- `feat/*` or `fix/*`:
+  - Short-lived feature/fix branches for upstream PRs.
+  - MUST branch directly off `upstream/main` (or `upstream-sync`), NOT from `main`.
+  - Keeps fork-only changes (like fork-specific documentation or workflows) out of upstream PRs.
+  - Follow upstream `CONTRIBUTING.md` rules strictly:
+    - Zero game data policy. Never commit disc data, dumps, or lifted C (`src/recomp/gen`).
+    - Validate with `python scripts/check-source-tree.py` and `python -m pytest -q tests/unit`.
+    - One topic per branch/PR, clean atomic commits.
+    - Conventional commit messages (`fix(...)`, `feat(...)`, `docs:`).
+    - Disclose AI assistance where used.
+
+### Upstream Sync Protocol
+When pulling new updates from upstream:
+```bash
+# 1. Update clean mirror
+git checkout upstream-sync
+git pull upstream main
+git push origin upstream-sync
+
+# 2. Integrate into fork main
+git checkout main
+git merge upstream-sync
+# Resolve conflicts if any, test, then:
+git push origin main
+```
+
+### Upstream Pull Request Protocol
+When creating PR targeting upstream:
+1. Ensure branch starts from clean `upstream-sync`:
+   ```bash
+   git checkout -b feat/<name> upstream-sync
+   ```
+2. Apply changes and verify pre-PR tests pass:
+   ```powershell
+   python scripts/check-source-tree.py
+   python -m pytest -q tests/unit
+   ```
+3. Push branch to `origin`:
+   ```bash
+   git push -u origin feat/<name>
+   ```
+4. Open PR targeting `upstream:main`:
+   ```bash
+   gh pr create --repo vyanhursky/DefJamFFNY-recomp --base main --head DarkTama:feat/<name>
+   ```
+
