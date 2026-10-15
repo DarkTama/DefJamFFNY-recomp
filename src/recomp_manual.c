@@ -31,6 +31,7 @@
 #include "recomp/gen/recomp_types.h"
 #include "hooks/save_compat.h"
 #include "hooks/test_observations.h"
+#include "hooks/pc_settings.h"
 
 /* Read-only probes use the lifter's universal entry hooks. They do not alter
  * guest registers, stack, memory or the generated body. Off in normal play. */
@@ -632,8 +633,44 @@ static void trace_voice_render(void)
     }
 }
 
+/* Measurement units hook: Sketch Artist character creation vitals */
+extern void sub_0005E9D0(void);
+extern void sub_0005EC00(void);
+extern void sub_00046CB0(void);
+
+static volatile int g_in_sketch_screen = 0;
+
+static void sketch_init_hook(void)
+{
+    g_in_sketch_screen = 1;
+    sub_0005E9D0();
+}
+
+static void sketch_destroy_hook(void)
+{
+    g_in_sketch_screen = 0;
+    sub_0005EC00();
+}
+
+static void get_language_hook(void)
+{
+    sub_00046CB0();
+    if (g_in_sketch_screen && pc_settings_metric_units()) {
+        char *buf = (char *)XBOX_PTR(0x341330);
+        buf[0] = '3';
+        buf[1] = '\0';
+        g_eax = 0x341330;
+    }
+}
+
 recomp_func_t recomp_lookup_manual(uint32_t xbox_va)
 {
+    if (xbox_va == 0x0005E9D0u)
+        return sketch_init_hook;
+    if (xbox_va == 0x0005EC00u)
+        return sketch_destroy_hook;
+    if (xbox_va == 0x00046CB0u)
+        return get_language_hook;
     if (xbox_va == 0x0012C310u && getenv("RECOMP_TRACE_VOICE"))
         return trace_voice_render;
     /* This hook sees indirect calls only, so it suits a trace wrapper or a

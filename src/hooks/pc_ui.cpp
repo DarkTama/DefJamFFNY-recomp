@@ -136,6 +136,7 @@ static const char *friendly(const char *section, const char *key)
         { "gamepad", "left_stick", "Left stick comes from" }, { "gamepad", "right_stick", "Right stick comes from" },
         { "launcher", "skip", "Skip the launcher at start" }, { "ui", "scale", "Text and control size" },
         { "ui", "overlay_pad", "Overlay pad buttons" }, { "ui", "overlay_key", "Overlay key" },
+        { "gameplay", "units", "Measurement units" },
     };
     for (const Label &l : labels)
         if (!strcmp(l.section, section) && !strcmp(l.key, key)) return l.text;
@@ -757,6 +758,8 @@ static void page_general(UiMode mode)
     settings_group("launcher", { "skip" });
     if (mode == UI_OVERLAY)
         ImGui::TextWrapped("With the launcher skipped, hold Shift while the game starts, or start it with --launcher, to see it again.");
+    ImGui::SeparatorText("Gameplay");
+    settings_group("gameplay", { "units" });
     ImGui::SeparatorText("In-game overlay");
     {
         RecompSetting *k = find("ui", "overlay_key");

@@ -23,6 +23,9 @@ int pc_display(const char *key, int fallback);
 /* Store a [display] value and write the file. Safe from any thread. */
 void pc_display_set(const char *key, int value);
 
+/* Measurement units: 0 = imperial, 1 = metric */
+int pc_settings_metric_units(void);
+
 /* Push the display settings that the renderer owns to it. Call before the
  * Direct3D device is created, and it is called again on every change. */
 void pc_settings_apply_display(void);

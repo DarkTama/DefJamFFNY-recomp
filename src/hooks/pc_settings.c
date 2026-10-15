@@ -39,6 +39,7 @@ static const char *const k_filter[] = { "smooth", "sharp", NULL };
 static const char *const k_ws_hud[] = { "auto", "edges", "centered", NULL };
 static const char *const k_ws_cutscenes[] = { "authored", "fill", NULL };
 static const char *const k_ws_fill[] = { "blur", "black", NULL };
+static const char *const k_units[] = { "imperial", "metric", NULL };
 
 /* A four-fighter match holds about 2 GiB of replacements. At 512 MiB the cache evicted and
  * re-decoded dozens of textures every two seconds in a fight on the Steam Deck. */
@@ -80,6 +81,8 @@ static RecompSetting g_display_settings[] = {
     { "display", "gamma", RECOMP_SETTING_BOOL, 1, 0, 0, NULL, "RECOMP_GAMMA",
       RECOMP_SETTING_RESTART,
       "Apply the game's own brightness curve, as the console does." },
+    { "gameplay", "units", RECOMP_SETTING_ENUM, 0, 0, 0, k_units, "RECOMP_UNITS", 0,
+      "Measurement units for character creation: imperial (ft/in, lbs) or metric (cm, kg)." },
 };
 #define DISPLAY_SETTING_COUNT (sizeof(g_display_settings) / sizeof(g_display_settings[0]))
 
@@ -340,6 +343,11 @@ static void supply_runtime_defaults(void)
 int pc_display(const char *key, int fallback)
 {
     return recomp_settings_get("display", key, fallback);
+}
+
+int pc_settings_metric_units(void)
+{
+    return recomp_settings_get("gameplay", "units", 0) == 1;
 }
 
 void pc_settings_apply_display(void)
