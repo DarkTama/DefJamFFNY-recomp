@@ -194,6 +194,8 @@
 
 | D116 | 2026-10-16 | Scope 3-tier save signature and career progression cheats into Phase 2 CAW Editor | Save file requires three HMAC-SHA1 seals (meta, payload, master header). Cash (0x00A0) and Dev Points (0x00A8) reverse-engineered and integrated into Phase 2 editor architecture. |
 
+| D117 | 2026-10-16 | Implement Phase 2 Standalone CAW Editor and Save Exporter tool | Built Python/Tkinter desktop tool in tools/caw_editor/ with career cheats (cash/dev points), combat attributes, 3-tier save signing, auto-directory hashing, and JSON presets. |
+
 ## 2. Environment inventory (2026-09-17)
 
 - OS: Windows 11 Pro 10.0.26200
@@ -282,6 +284,7 @@ defjam-recomp/
 - 2026-10-15 10:17 — Published latestv0.9.1/source055f3c1/toolkit837e2c7 after taggedworkflow38748620594 passes27/27;9game-free assets downloaded/API-hash+checksum+provenance verified on all3platforms. PR28 merged dd0e57c; PR27 closed unmerged. Issue26 staysOPEN; release/monitoring comment6194257593 read-back verified. Windows ~52min/atleast20starts/0arena-failure and owner-reported Decksuccess; no new nativeMac/performanceclaim. Prior stable releases unchanged, no gamebinary/data/generatedsource published.
 - 2026-10-15 23:55 — Implemented metric units setting [gameplay] units and Sketch Artist hook (D115). Tested and built clean.
 - 2026-10-16 00:30 — Reverse engineered 3-tier save signing architecture and career cheats; scoped into Phase 2 CAW editor (D116).
+- 2026-10-16 00:45 — Implemented Phase 2 Standalone CAW Editor in tools/caw_editor/ with Tkinter GUI, unit tests, 3-tier signing, and JSON preset export (D117).
 
 ## 7. Hand-off
 
