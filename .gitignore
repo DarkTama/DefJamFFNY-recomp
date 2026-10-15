@@ -9,6 +9,7 @@
 private/
 prequisites/
 prerequisites/
+mods/
 src/recomp/gen/**
 src/recomp/gen-pending-*/
 !src/recomp/gen/.gitkeep
