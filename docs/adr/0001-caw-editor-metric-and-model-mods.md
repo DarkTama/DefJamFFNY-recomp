@@ -20,7 +20,13 @@ All changes must strictly respect project hygiene: no game dump data or propriet
    Reverse-engineering revealed that the game's Flash UI (`screens/story/Sketch.big`) contains built-in metric conversion routines (`footConvert` and `weightConvert`) that activate when `g_language == "french"` (Language ID 3). We will intercept the native Flash callback `Game.GetLanguage()` (`sub_00046CB0` in `src/recomp_manual.c`) when `[gameplay] units = metric` is configured in `settings.ini`, returning Language ID 3 while keeping menu text in English.
 
 2. **Standalone CAW Editor & Exporter Tool**:
-   Develop a standalone Python application using `tkinter` in `tools/caw-editor/`. The editor manipulates human-readable JSON character presets and compiles/signs valid binary Xbox profile files (`20CM` / `MC02` format) using RFC 2104 HMAC-SHA1 with the title's signature key. The tool places generated files directly into `save/UserData/45410049/<hash>/`.
+   Develop a standalone Python application using `tkinter` in `tools/caw-editor/`. The editor manipulates human-readable JSON character presets and compiles/signs valid binary Xbox profile files (`20CM` / `MC02` format).
+   - **3-Tier HMAC-SHA1 Architecture**: Reverse engineering revealed the save format requires three distinct HMAC-SHA1 signatures (using 16 zero bytes `\x00`*16 as the Xbox title key):
+     - Seal 1 (`0x10..0x23`): HMAC-SHA1 of metadata block (`0x4C..0x8B`).
+     - Seal 2 (`0x24..0x37`): HMAC-SHA1 of fighter profile payload (`0x8C..end`).
+     - Seal 3 (`0x38..0x4B`): Master Seal over header (`0x00..0x37`), locking Seal 1 and Seal 2 together.
+   - **Career Economy Modifiers**: Expose inputs for Story Mode Cash (`0x00A0` and `0x01E8`) and Dev Points (`0x00A8`), allowing player progression customization directly from the GUI.
+   - The tool places generated files directly into `save/UserData/45410049/<hash>/`.
 
 3. **Female Fighter Support**:
    The engine already contains female skeletons, animation sets, and character models (`V2IP_400A` through `V2IP_405A`). The standalone editor will permit selecting female model indices for any created fighter profile. Players using female models in Story Mode will experience the original authored male voice and cutscene dialogue.

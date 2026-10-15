@@ -192,6 +192,8 @@
 
 | D115 | 2026-10-15 | Add [gameplay] units setting (imperial/metric) and Sketch Artist metric display hook | Enables metric height/weight (cm/kg) in character creation by intercepting Flash language query when units=metric. Menus stay English. |
 
+| D116 | 2026-10-16 | Scope 3-tier save signature and career progression cheats into Phase 2 CAW Editor | Save file requires three HMAC-SHA1 seals (meta, payload, master header). Cash (0x00A0) and Dev Points (0x00A8) reverse-engineered and integrated into Phase 2 editor architecture. |
+
 ## 2. Environment inventory (2026-09-17)
 
 - OS: Windows 11 Pro 10.0.26200
@@ -279,6 +281,7 @@ defjam-recomp/
 - 2026-10-15 10:07 — Owner authorized heap-reclaim release after successful Windows reporter and owner-reported Deck tests (D114). PR28 merged dd0e57c with25/25CI; PR27 closed unmerged. Prepared0.9.1 version and release notes, keeping issue26 open for monitoring. No game binary/data or generated guest code distributed; tagged setup policy/CI/publish pending.
 - 2026-10-15 10:17 — Published latestv0.9.1/source055f3c1/toolkit837e2c7 after taggedworkflow38748620594 passes27/27;9game-free assets downloaded/API-hash+checksum+provenance verified on all3platforms. PR28 merged dd0e57c; PR27 closed unmerged. Issue26 staysOPEN; release/monitoring comment6194257593 read-back verified. Windows ~52min/atleast20starts/0arena-failure and owner-reported Decksuccess; no new nativeMac/performanceclaim. Prior stable releases unchanged, no gamebinary/data/generatedsource published.
 - 2026-10-15 23:55 — Implemented metric units setting [gameplay] units and Sketch Artist hook (D115). Tested and built clean.
+- 2026-10-16 00:30 — Reverse engineered 3-tier save signing architecture and career cheats; scoped into Phase 2 CAW editor (D116).
 
 ## 7. Hand-off
 
